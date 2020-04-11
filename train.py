@@ -26,7 +26,7 @@ LR = 1e-3
 epochs = 10
 device = 'cuda'
 
-dataloader = DataLoader(FlyingChairsDataset("../FlyingChairs2/"), batch_size=1)
+dataloader = DataLoader(FlyingChairsDataset("/content/drive/My Drive/data/FlyingChairs2/FlyingChairs2/"), batch_size=1)
 model = ReCoNet().to(device)
 
 resume = input('Resume training? y/n: ').lower() == 'y'
