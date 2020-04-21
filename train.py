@@ -32,7 +32,7 @@ model = ReCoNet().to(device)
 resume = input('Resume training? y/n: ').lower() == 'y'
 if resume:
 	model_name = input('Model Name: ')
-	model.load_state_dict(torch.load('/content/drive/My Drive/data/runs/output/' + modenl_name))
+	model.load_state_dict(torch.load('/content/drive/My Drive/data/runs/output/' + model_name))
 
 adam = optim.Adam(model.parameters(), lr=LR)
 L2distance = nn.MSELoss().to(device)
