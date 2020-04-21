@@ -23,16 +23,16 @@ from network import *
 from totaldata import *
 
 LR = 1e-3
-epochs = 10
+epochs = 100
 device = 'cuda'
 
-dataloader = DataLoader(FlyingChairsDataset("/content/drive/My Drive/data/FlyingChairs2/FlyingChairs2/"), batch_size=1)
+dataloader = DataLoader(MPIDataset("/content/MPI_Data/"), batch_size=1)
 model = ReCoNet().to(device)
 
 resume = input('Resume training? y/n: ').lower() == 'y'
 if resume:
 	model_name = input('Model Name: ')
-	model.load_state_dict(torch.load('runs/output/' + model_name))
+	model.load_state_dict(torch.load('/content/drive/My Drive/data/runs/output/' + modenl_name))
 
 adam = optim.Adam(model.parameters(), lr=LR)
 L2distance = nn.MSELoss().to(device)
@@ -41,7 +41,7 @@ Vgg16 = Vgg16().to(device)
 
 style_names = ('autoportrait', 'candy', 'composition',
 			   'edtaonisl', 'udnie')
-style_model_path = './models/weights/'
+# style_model_path = './models/weights/'
 #Changed excessive min, max operations in next line
 style_img_path = './models/style/'+style_names[2]
 style = transform1(Image.open(style_img_path+'.jpg'))
@@ -148,11 +148,12 @@ for epoch in range(epochs):
 		adam.step()
 		#
 		#
-		if (itr+1)%1000 ==0 :
-			torch.save(model.state_dict(), '%s/final_reconet_epoch_%d_itr_%d.pth' % ("runs/output", epoch, itr//1000))
+
+		# if (itr+1)%1000 ==0 :
+		# 	torch.save(model.state_dict(), '%s/final_reconet_epoch_%d_itr_%d.pth' % ("runs/output", epoch, itr//1000))
 
 
 		print('[%d/%d][%d/%d] SL: %.4f CL: %.4f FTL: %.4f OTL: %.4f RL: %.4f'
 						% (epoch, epochs, itr, len(dataloader),
 							style_loss, content_loss , f_temporal_loss, o_temporal_loss, reg_loss))
-	torch.save(model.state_dict(), '%s/reconet_epoch_%d.pth' % ("runs/output", epoch))
+	torch.save(model.state_dict(), '%s/reconet_epoch_%d.pth' % ("/content/drive/My Drive/data/runs/output", epoch))
