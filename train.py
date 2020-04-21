@@ -25,14 +25,16 @@ from totaldata import *
 LR = 1e-3
 epochs = 100
 device = 'cuda'
-
+LastModelNO = 0
 dataloader = DataLoader(MPIDataset("/content/MPI_Data/"), batch_size=1)
 model = ReCoNet().to(device)
 
 resume = input('Resume training? y/n: ').lower() == 'y'
 if resume:
 	model_name = input('Model Name: ')
+	LastModelNO = input('Model NO: ')
 	model.load_state_dict(torch.load('/content/drive/My Drive/data/runs/output/' + model_name))
+
 
 adam = optim.Adam(model.parameters(), lr=LR)
 L2distance = nn.MSELoss().to(device)
@@ -156,4 +158,5 @@ for epoch in range(epochs):
 		print('[%d/%d][%d/%d] SL: %.4f CL: %.4f FTL: %.4f OTL: %.4f RL: %.4f'
 						% (epoch, epochs, itr, len(dataloader),
 							style_loss, content_loss , f_temporal_loss, o_temporal_loss, reg_loss))
-	torch.save(model.state_dict(), '%s/reconet_epoch_%d.pth' % ("/content/drive/My Drive/data/runs/output", epoch))
+		
+	torch.save(model.state_dict(), '%s/reconet_epoch_%d.pth' % ("/content/drive/My Drive/data/runs/output", (epoch + LastModelNO) ))
