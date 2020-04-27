@@ -32,7 +32,7 @@ model = ReCoNet().to(device)
 resume = input('Resume training? y/n: ').lower() == 'y'
 if resume:
 	model_name = input('Model Name: ')
-	LastModelNO = input('Model NO: ')
+	LastModelNO = int(input('Model NO: '))
 	model.load_state_dict(torch.load('/content/drive/My Drive/data/runs/output/' + model_name))
 
 
